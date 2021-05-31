@@ -2,6 +2,7 @@ package dev.veliz.direbotlink;
 
 import dev.veliz.direbotlink.config.Config;
 import dev.veliz.direbotlink.events.ChatHandler;
+import dev.veliz.direbotlink.events.ServerHandler;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -23,6 +24,7 @@ public class DireBotLink {
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_SPEC);
 
         MinecraftForge.EVENT_BUS.register(ChatHandler.class);
+        MinecraftForge.EVENT_BUS.register(ServerHandler.class);
     }
 
 }

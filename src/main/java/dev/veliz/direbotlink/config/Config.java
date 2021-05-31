@@ -27,7 +27,6 @@ public class Config {
     @SubscribeEvent
     public static void onModConfigEvent(final ModConfig.ModConfigEvent configEvent) {
         if (configEvent.getConfig().getSpec() == Config.SERVER_SPEC) {
-            System.out.println("\n\n\nRELOAD CONFIG\n\n\n");
             bakeConfig();
         }
     }
