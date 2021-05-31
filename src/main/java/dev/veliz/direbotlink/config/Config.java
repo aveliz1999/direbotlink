@@ -18,8 +18,11 @@ public class Config {
         SERVER = specPair.getLeft();
     }
 
-    public static String chatWebhook;
+    public static int serverId;
     public static String apiKey;
+    public static String chatWebhook;
+    public static String statusWebhook;
+
 
     @SubscribeEvent
     public static void onModConfigEvent(final ModConfig.ModConfigEvent configEvent) {
@@ -30,23 +33,39 @@ public class Config {
     }
 
     public static void bakeConfig() {
-        chatWebhook = SERVER.chatWebhook.get();
+        serverId = SERVER.serverId.get();
         apiKey = SERVER.apiKey.get();
+        chatWebhook = SERVER.chatWebhook.get();
+        statusWebhook = SERVER.statusWebhook.get();
     }
 
     public static class ServerConfig {
 
-        public final ForgeConfigSpec.ConfigValue<String> chatWebhook;
+        public final ForgeConfigSpec.ConfigValue<Integer> serverId;
         public final ForgeConfigSpec.ConfigValue<String> apiKey;
+        public final ForgeConfigSpec.ConfigValue<String> chatWebhook;
+        public final ForgeConfigSpec.ConfigValue<String> statusWebhook;
+
 
         public ServerConfig(ForgeConfigSpec.Builder builder) {
+            serverId = builder
+                    .comment("ID of the server to sync with")
+                    .define("serverId", 0);
+            apiKey = builder
+                    .comment("API Key to authenticate with the endpoint")
+                    .define("apiKey", "");
+
+            builder.push("Chat");
             chatWebhook = builder
                     .comment("Endpoint for the chat requests to go to")
-                    .define("chatWebhook", "");
+                    .define("webhook", "");
+            builder.pop();
 
-            apiKey = builder
-                    .comment("API key to authenticate with the endpoint")
-                    .define("apiKey", "");
+            builder.push("Status");
+            statusWebhook = builder
+                    .comment("Endpoint for the status updates to go to")
+                    .define("webhook", "");
+            builder.pop();
         }
     }
 
