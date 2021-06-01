@@ -22,6 +22,7 @@ public class Config {
     public static String apiKey;
     public static String chatWebhook;
     public static String statusWebhook;
+    public static String tasksWebhook;
 
 
     @SubscribeEvent
@@ -36,6 +37,7 @@ public class Config {
         apiKey = SERVER.apiKey.get();
         chatWebhook = SERVER.chatWebhook.get();
         statusWebhook = SERVER.statusWebhook.get();
+        tasksWebhook = SERVER.tasksWebhook.get();
     }
 
     public static class ServerConfig {
@@ -44,6 +46,7 @@ public class Config {
         public final ForgeConfigSpec.ConfigValue<String> apiKey;
         public final ForgeConfigSpec.ConfigValue<String> chatWebhook;
         public final ForgeConfigSpec.ConfigValue<String> statusWebhook;
+        public final ForgeConfigSpec.ConfigValue<String> tasksWebhook;
 
 
         public ServerConfig(ForgeConfigSpec.Builder builder) {
@@ -63,6 +66,12 @@ public class Config {
             builder.push("Status");
             statusWebhook = builder
                     .comment("Endpoint for the status updates to go to")
+                    .define("webhook", "");
+            builder.pop();
+
+            builder.push("PendingTasks");
+            tasksWebhook = builder
+                    .comment("Endpoint to get the list of pending tasks for the mod to do")
                     .define("webhook", "");
             builder.pop();
         }
