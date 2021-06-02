@@ -3,6 +3,7 @@ package dev.veliz.direbotlink.status;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.veliz.direbotlink.config.Config;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -50,7 +51,16 @@ public class PendingTask extends TimerTask {
                         }
                         case "command": {
                             String command = task.get("command").getAsString();
-                            server.getCommands().getDispatcher().execute(command, server.createCommandSourceStack());
+                            try{
+                                server.getCommands().getDispatcher().execute(command, server.createCommandSourceStack());
+                            }
+                            catch(Exception e) {
+                                if(e instanceof CommandSyntaxException) {
+                                }
+                                else {
+                                    e.printStackTrace();
+                                }
+                            }
                             break;
                         }
                         default:
