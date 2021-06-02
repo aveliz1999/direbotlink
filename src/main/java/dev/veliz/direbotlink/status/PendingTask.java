@@ -8,10 +8,13 @@ import dev.veliz.direbotlink.config.Config;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.common.ForgeHooks;
 import org.asynchttpclient.*;
 
 import java.util.TimerTask;
+import java.util.UUID;
 
 public class PendingTask extends TimerTask {
 
@@ -45,7 +48,7 @@ public class PendingTask extends TimerTask {
                             String message = task.get("message").getAsString();
                             ServerPlayerEntity player = server.getPlayerList().getPlayerByName(target);
                             if(player != null) {
-                                player.sendMessage(new StringTextComponent(message), player.getUUID());
+                                player.sendMessage(ForgeHooks.newChatWithLinks(message), player.getUUID());
                             }
                             break;
                         }
@@ -61,6 +64,11 @@ public class PendingTask extends TimerTask {
                                     e.printStackTrace();
                                 }
                             }
+                            break;
+                        }
+                        case "broadcast": {
+                            String message = task.get("message").getAsString();
+                            server.getPlayerList().broadcastMessage(ForgeHooks.newChatWithLinks(message), ChatType.SYSTEM, UUID.randomUUID());
                             break;
                         }
                         default:
