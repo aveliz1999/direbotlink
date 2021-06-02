@@ -15,7 +15,6 @@ public class ChatHandler {
 
         JsonObject obj = new JsonObject();
         obj.addProperty("serverId", Config.serverId);
-        obj.addProperty("apiKey", Config.apiKey);
         obj.addProperty("minecraftUsername", event.getPlayer().getDisplayName().getString());
         obj.addProperty("minecraftUuid", event.getPlayer().getStringUUID());
         obj.addProperty("message", event.getMessage());

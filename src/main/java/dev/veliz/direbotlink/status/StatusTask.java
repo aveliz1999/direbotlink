@@ -30,7 +30,6 @@ public class StatusTask extends TimerTask {
 
         JsonObject obj = new JsonObject();
         obj.addProperty("serverId", Config.serverId);
-        obj.addProperty("apiKey", Config.apiKey);
         obj.add("players", playerList);
 
         AsyncHttpClient client = Dsl.asyncHttpClient();
