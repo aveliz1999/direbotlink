@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dev.veliz.direbotlink.config.Config;
+import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.StringTextComponent;
@@ -47,7 +48,11 @@ public class PendingTask extends TimerTask {
                             }
                             break;
                         }
-                        // TODO add command task
+                        case "command": {
+                            String command = task.get("command").getAsString();
+                            server.getCommands().getDispatcher().execute(command, server.createCommandSourceStack());
+                            break;
+                        }
                         default:
                             break;
                     }
