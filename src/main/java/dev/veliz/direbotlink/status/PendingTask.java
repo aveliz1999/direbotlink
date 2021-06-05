@@ -5,11 +5,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.veliz.direbotlink.config.Config;
-import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.ChatType;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.ForgeHooks;
 import org.asynchttpclient.*;
 
@@ -19,20 +17,21 @@ import java.util.UUID;
 public class PendingTask extends TimerTask {
 
     private MinecraftServer server;
+    private AsyncHttpClient client;
 
     public PendingTask(MinecraftServer server) {
         this.server = server;
+        this.client = Dsl.asyncHttpClient();
     }
 
     @Override
     public void run() {
-        AsyncHttpClient client = Dsl.asyncHttpClient();
         Request request = Dsl
                 .get(Config.tasksWebhook + "?server=" + Config.serverId)
                 .setHeader("Authorization", "Bearer " + Config.apiKey)
                 .setHeader("Content-Type", "application/json")
                 .build();
-        client.executeRequest(request, new AsyncCompletionHandler<Object>() {
+        this.client.executeRequest(request, new AsyncCompletionHandler<Object>() {
             @Override
             public Object onCompleted(Response response) throws Exception {
                 JsonParser parser = new JsonParser();

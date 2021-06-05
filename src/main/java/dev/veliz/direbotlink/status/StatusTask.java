@@ -11,9 +11,11 @@ import java.util.TimerTask;
 public class StatusTask extends TimerTask {
 
     private MinecraftServer server;
+    private AsyncHttpClient client;
 
     public StatusTask(MinecraftServer server) {
         this.server = server;
+        this.client = Dsl.asyncHttpClient();
     }
 
     @Override
@@ -32,14 +34,13 @@ public class StatusTask extends TimerTask {
         obj.addProperty("serverId", Config.serverId);
         obj.add("players", playerList);
 
-        AsyncHttpClient client = Dsl.asyncHttpClient();
         Request request = Dsl
                 .post(Config.statusWebhook)
                 .setBody(obj.toString())
                 .setHeader("Authorization", "Bearer " + Config.apiKey)
                 .setHeader("Content-Type", "application/json")
                 .build();
-        client.executeRequest(request, new AsyncCompletionHandler<Object>() {
+        this.client.executeRequest(request, new AsyncCompletionHandler<Object>() {
             @Override
             public Object onCompleted(Response response) throws Exception {
                 return response;
